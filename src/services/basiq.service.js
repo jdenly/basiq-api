@@ -30,6 +30,29 @@ const getAccessToken = async (apiKey) => {
 };
 
 /**
+ * Get all users.
+ * @param accessToken
+ * @returns {Promise<void>}
+ */
+const getUsers = async (accessToken) => {
+  const config = {
+    method: 'get',
+    url: 'https://au-api.basiq.io/users',
+    headers: {
+      'Authorization': `Bearer ${accessToken}`,
+      'Accept': 'application/json',
+    }
+  };
+
+  try {
+    let response = await axios(config);
+    return response.data;
+  } catch (e) {
+    console.log(e.response.data);
+  }
+}
+
+/**
  * Create a new user.
  * @param {string} accessToken
  * @param {string} email
@@ -124,6 +147,7 @@ const getAccounts = async (accessToken, userId) => {
 
 module.exports = {
   getAccessToken,
+  getUsers,
   createUser,
   createConnection,
   getAccounts,
