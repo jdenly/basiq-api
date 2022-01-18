@@ -57,12 +57,16 @@ const getUsers = async (accessToken) => {
  * @param {string} accessToken
  * @param {string} email
  * @param {string} mobile
+ * @param {string} firstName optional first name of the user
+ * @param {string} lastName optional last name of the user
  * @returns {Object} user details
  */
-const createUser = async (accessToken, email, mobile) => {
+const createUser = async (accessToken, email, mobile, firstName, lastName) => {
   const data = JSON.stringify({
     "email": email,
     "mobile": mobile,
+    "firstName": firstName,
+    "lastName": lastName,
   });
 
   const config = {

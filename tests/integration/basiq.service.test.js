@@ -48,13 +48,17 @@ describe('Basiq service', () => {
     test('should correctly create a user', async () => {
       const email = 'test.user@hooli.com';
       const mobile = '+614xxxxxxxx';
+      const firstName = 'Test';
+      const lastName = 'User';
       const accessToken = await getAccessToken(BASIQ_API_KEY);
-      await expect(createUser(accessToken.access_token, email, mobile)).resolves.toStrictEqual(
+      await expect(createUser(accessToken.access_token, email, mobile, firstName, lastName)).resolves.toStrictEqual(
         expect.objectContaining({
           type: 'user',
           id: expect.any(String),
           email: email,
           mobile: mobile,
+          firstName: firstName,
+          lastName: lastName,
         })
       );
     });
@@ -73,6 +77,7 @@ describe('Basiq service', () => {
           id: expect.any(String),
         })
       );
+      // TODO - retrieve job (https://api.basiq.io/reference/retrieve-a-job) and wait until it's successful before checking for connection.
     });
   });
 
@@ -87,7 +92,7 @@ describe('Basiq service', () => {
 
       // The creation of the accounts appears to be eventually consistent, so this will fail sometimes
       // due to the race condition with the job associated with the account creation.
-      // TODO see if there is a way of checking for job completion, or use retries here.
+      // TODO get job and wait for job completion (https://api.basiq.io/reference/retrieve-a-job), use retries/progressive back-off.
       await expect(getAccounts(accessToken.access_token, user.id, institutionId, loginId, password)).resolves.toStrictEqual(
         expect.objectContaining({
           type: 'list',
